@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LocationAppSample</string>
+    <string name="latitude"> خط العرض :</string>
+    <string name="longitude"> خط العرض :</string>
+</resources>

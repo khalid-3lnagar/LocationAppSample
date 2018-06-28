@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity
     private LocationRequest mLocationRequest;
     private LocationCallback mlocationcallback;
     //views
-    private TextView mlocationTxt;
+    private TextView mlatitudeTxt;
+    private TextView mlongitudeTxt;
+
     private Switch mLocationSwitch;
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
@@ -57,10 +59,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         updateValuesFromBundle(savedInstanceState);
-        mlocationTxt = findViewById(R.id.location_txt);
+        mlatitudeTxt = findViewById(R.id.latitude_txt);
+        mlongitudeTxt = findViewById(R.id.longitude_txt);
         createLocationRequest();
         createLocationCallback();
-
 
 
         mfusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -117,7 +119,9 @@ public class MainActivity extends AppCompatActivity
                 if (locationResult == null) return;
                 for (Location location : locationResult.getLocations()) {
                     mCurrentLocation = location;
-                    mlocationTxt.setText(location.toString());
+
+                    mlatitudeTxt.setText(String.valueOf(location.getLatitude()));
+                    mlongitudeTxt.setText(String.valueOf(location.getLongitude()));
                 }
             }
         };
@@ -134,15 +138,16 @@ public class MainActivity extends AppCompatActivity
     private void startLocationUpdate() {
         Log.v(LOG_TAG, "start Location request");
 
-        mfusedLocationClient.requestLocationUpdates(mLocationRequest, mlocationcallback, null).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+        mfusedLocationClient.requestLocationUpdates(mLocationRequest, mlocationcallback, null)
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.v(LOG_TAG,"the request updates is success");
+                Log.v(LOG_TAG, "the request updates is success");
             }
         }).addOnFailureListener(this, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.v(LOG_TAG,e.getMessage());
+                Log.v(LOG_TAG, e.getMessage());
             }
         });
     }
@@ -156,6 +161,7 @@ public class MainActivity extends AppCompatActivity
     private void stopLocationUpdates() {
         Log.v(LOG_TAG, "stop Location request");
         mfusedLocationClient.removeLocationUpdates(mlocationcallback);
+
 
     }
 
@@ -172,7 +178,8 @@ public class MainActivity extends AppCompatActivity
                         if (location != null) {
                             Log.v(LOG_TAG, "last location is here");
                             mCurrentLocation = location;
-                            mlocationTxt.setText(location.toString());
+                            mlatitudeTxt.setText(String.valueOf(location.getLatitude()));
+                            mlongitudeTxt.setText(String.valueOf(location.getLongitude()));
 
                         } else {
                             Log.v(LOG_TAG, "the Location object is null");
@@ -207,6 +214,7 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
+
                 }
                 return;
             }
